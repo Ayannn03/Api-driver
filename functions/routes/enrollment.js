@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const Driver = require('../models/Driver');
+const Driver = require('../schema/enrollment');
 
 const router = express.Router();
 
