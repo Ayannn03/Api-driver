@@ -7,7 +7,7 @@ const driverRouter = require('./routes/enrollment');
 const app = express();
 
 // Your MongoDB Cloud URL
-const dbCloudUrl = 'mongodb+srv://IanRey:Bukayo32@cluster0.l3hgyiz.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0';
+const dbCloudUrl = 'mongodb+srv://IanRey:Testest12@cluster0.l3hgyiz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 const dbLocalUrl = 'mongodb://localhost:27017/driver';
 
 // Define CORS options
