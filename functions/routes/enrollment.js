@@ -20,14 +20,28 @@ router.post('/signup-driver', async (req, res) => {
     try {
       const { email, username, password, fullname, municipality, barangay, street, number, birthday } = req.body;
   
-      // Add validation and save logic here
-      const newDriver = new Driver({ email, username, password, fullname, municipality, barangay, street, number, birthday });
+      const address = {
+        municipality,
+        barangay,
+        street,
+      };
+  
+      const newDriver = new Driver({
+        email,
+        username,
+        password,
+        fullname,
+        address,
+        number,
+        birthday,
+      });
+  
       await newDriver.save();
   
       res.status(200).json({ message: 'Signup successful', username });
     } catch (error) {
       console.error('Signup error:', error);
-      res.status(500).json({ message: 'Server Error', error: error.message }); // Include the error message
+      res.status(500).json({ message: 'Server Error', error: error.message });
     }
   });
 
