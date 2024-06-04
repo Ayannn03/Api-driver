@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const Driver = require('../schema/enrollment');
+const Driver = require('../models/Driver');
 
 const router = express.Router();
 
@@ -18,32 +18,34 @@ router.get('/', async (req, res) => {
 // Signup route
 router.post('/signup-driver', async (req, res) => {
     try {
-      const { email, username, password, fullname, municipality, barangay, street, number, birthday } = req.body;
-  
-      const address = {
-        municipality,
-        barangay,
-        street,
-      };
-  
-      const newDriver = new Driver({
-        email,
-        username,
-        password,
-        fullname,
-        address,
-        number,
-        birthday,
-      });
-  
-      await newDriver.save();
-  
-      res.status(200).json({ message: 'Signup successful', username });
+        const { email, username, password, fullname, municipality, barangay, street, number, birthday } = req.body;
+
+        const address = {
+            municipality,
+            barangay,
+            street,
+        };
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newDriver = new Driver({
+            email,
+            username,
+            password: hashedPassword,
+            fullname,
+            address,
+            number,
+            birthday,
+        });
+
+        await newDriver.save();
+
+        res.status(200).json({ message: 'Signup successful', username });
     } catch (error) {
-      console.error('Signup error:', error);
-      res.status(500).json({ message: 'Server Error', error: error.message });
+        console.error('Signup error:', error);
+        res.status(500).json({ message: 'Server Error', error: error.message });
     }
-  });
+});
 
 // Login route
 router.post('/login-driver', async (req, res) => {
@@ -71,6 +73,8 @@ router.post('/enroll-vehicle', async (req, res) => {
     try {
         const { userId, type, model, year, plateNumber } = req.body;
 
+        console.log('Enrollment data received:', req.body);
+
         const driver = await Driver.findById(userId);
         if (!driver) {
             return res.status(404).json({ message: 'User not found' });
@@ -89,7 +93,7 @@ router.post('/enroll-vehicle', async (req, res) => {
         res.status(201).json({ message: 'Vehicle enrolled successfully', vehicle: { type, model, year, plateNumber } });
     } catch (error) {
         console.error('Error enrolling vehicle:', error);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: 'Server Error', error: error.message });
     }
 });
 
