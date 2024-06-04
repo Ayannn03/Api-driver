@@ -18,36 +18,18 @@ router.get('/', async (req, res) => {
 // Signup route
 router.post('/signup-driver', async (req, res) => {
     try {
-        const { username, email, password, fullname, municipality, barangay, street, number, birthday } = req.body;
-
-        // Check if the user already exists
-        let driver = await Driver.findOne({ email });
-        if (driver) {
-            return res.status(400).json({ message: 'User already exists' });
-        }
-
-        // Hash password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
-        // Create new user
-        user = new Driver({
-            username,
-            email,
-            password: hashedPassword,
-            fullname,
-            address: { municipality, barangay, street },
-            number,
-            birthday,
-        });
-
-        await driver.save();
-        res.status(201).json({ message: 'User created successfully', username: driver.username });
+      const { email, username, password, fullname, municipality, barangay, street, number, birthday } = req.body;
+  
+      // Add validation and save logic here
+      const newDriver = new Driver({ email, username, password, fullname, municipality, barangay, street, number, birthday });
+      await newDriver.save();
+  
+      res.status(200).json({ message: 'Signup successful', username });
     } catch (error) {
-        console.error('Error during signup:', error);
-        res.status(500).json({ message: 'Server Error' });
+      console.error('Signup error:', error);
+      res.status(500).json({ message: 'Server Error', error: error.message }); // Include the error message
     }
-});
+  });
 
 // Login route
 router.post('/login-driver', async (req, res) => {
