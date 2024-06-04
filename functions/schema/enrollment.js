@@ -15,25 +15,25 @@ const addressSchema = new mongoose.Schema({
   }
 });
 
-// const vehicleSchema = new mongoose.Schema({
-//   type: {
-//     type: String,
-//     required: true
-//   },
-//   model: {
-//     type: String,
-//     required: true
-//   },
-//   year: {
-//     type: Number,
-//     required: true
-//   },
-//   plateNumber: {
-//     type: String,
-//     required: true,
-//     unique: true
-//   }
-// });
+const vehicleSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    required: true
+  },
+  model: {
+    type: String,
+    required: true
+  },
+  year: {
+    type: Number,
+    required: true
+  },
+  plateNumber: {
+    type: String,
+    required: true,
+    unique: true
+  }
+});
 
 const driverSchema = new mongoose.Schema({
   username: {
