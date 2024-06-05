@@ -68,35 +68,20 @@ router.post('/login-driver', async (req, res) => {
         res.status(500).json({ message: 'Server Error' });
     }
 });
-router.post('/enroll-vehicle', async (req, res) => {
+
+app.post('/enroll-vehicle', async (req, res) => {
+    const { type, model, year, plateNumber } = req.body;
     try {
-        const { type, model, year, plateNumber } = req.body;
-
-        console.log('Enrollment data received:', req.body);
-
-        // Check if the plate number is already registered
-        const existingVehicle = await Vehicle.findOne({ plateNumber });
-        if (existingVehicle) {
-            return res.status(400).json({ message: 'Plate number already registered' });
-        }
-
-        // Create a new vehicle document
-        const newVehicle = new Vehicle({
-            type,
-            model,
-            year,
-            plateNumber
-        });
-
-        // Save the new vehicle to the database
-        await newVehicle.save();
-
-        // Respond with success message
-        res.status(201).json({ message: 'Vehicle enrolled successfully', vehicle: newVehicle });
+      const newVehicle = new Vehicle({ type, model, year, plateNumber });
+      await newVehicle.save();
+      res.status(201).json({ message: 'Vehicle enrolled successfully' });
     } catch (error) {
-        console.error('Error enrolling vehicle:', error);
-        res.status(500).json({ message: 'Server Error', error: error.message });
+      if (error.code === 11000) {
+        res.status(400).json({ message: 'Vehicle with this plate number already exists' });
+      } else {
+        res.status(500).json({ message: 'Server error' });
+      }
     }
-});
+  });
 
 module.exports = router;
