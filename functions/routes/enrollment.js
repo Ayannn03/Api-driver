@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const Driver = require('../schema/enrollment');
+const Vehicle = require('../schema/enroll-vehicle')
 
 const router = express.Router();
 
@@ -69,7 +70,7 @@ router.post('/login-driver', async (req, res) => {
     }
 });
 
-app.post('/enroll-vehicle', async (req, res) => {
+router.post('/enroll-vehicle', async (req, res) => {
     const { type, model, year, plateNumber } = req.body;
     try {
       const newVehicle = new Vehicle({ type, model, year, plateNumber });

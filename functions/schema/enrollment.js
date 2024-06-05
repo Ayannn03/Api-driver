@@ -15,25 +15,6 @@ const addressSchema = new mongoose.Schema({
   }
 });
 
-const vehicleSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    required: true
-  },
-  model: {
-    type: String,
-    required: true
-  },
-  year: {
-    type: Number,
-    required: true
-  },
-  plateNumber: {
-    type: String,
-    required: true,
-    unique: true
-  }
-});
 
 const driverSchema = new mongoose.Schema({
   username: {
@@ -66,7 +47,6 @@ const driverSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  vehicles: [vehicleSchema] // Array of vehicleSchema to allow multiple vehicles
 });
 
 const Driver = mongoose.model('Driver', driverSchema);
